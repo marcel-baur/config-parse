@@ -4,6 +4,10 @@ security:
       client_id: 123
       client_secret: xyz
 
+one:
+  big:
+    cascade: yeet
+
 url: http://asdf.de:9393
 
 # Comment
