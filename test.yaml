@@ -1,0 +1,10 @@
+security:
+  auth:
+    cidaas:
+      client_id: 123
+      client_secret: xyz
+
+url: http://asdf.de:9393
+
+# Comment
+value: true
