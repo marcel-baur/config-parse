@@ -45,7 +45,6 @@ fn handle_yaml_hash(yaml: Hash) -> Option<String> {
     // next depth of the hash.
     let key = yaml.keys().next().unwrap();
     let rec_yaml: &Yaml = &yaml[key];
-
     return handle_yaml(rec_yaml.clone());
 }
 
