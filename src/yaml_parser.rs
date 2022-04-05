@@ -1,6 +1,5 @@
 extern crate yaml_rust;
 use std::fs;
-use serde::Serialize;
 use yaml_rust::yaml::{Array, Hash};
 use yaml_rust::{Yaml, YamlLoader};
 
@@ -12,9 +11,9 @@ use crate::config::Configuration;
 /// be an *exact* path, given in dot notation, e.g. `root.child.childtwo.node`.
 /// Multiple Nodes can be queried.
 /// Parse the Yaml file in the given `path`
-pub fn parse_yaml(path: &str, conf: Configuration) {
-    println!("Parsing file {}", path);
-    let doc: &Yaml = &load_yaml_file(path);
+pub fn parse_yaml(conf: Configuration) {
+    println!("Parsing file {}", conf.file);
+    let doc: &Yaml = &load_yaml_file(&conf.file);
     let mut entries: Vec<Record> = vec![];
     for key in conf.keys {
         let split: Vec<&str> = key.split(".").collect();
