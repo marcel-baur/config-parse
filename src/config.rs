@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Configuration {
+    pub file: String,
     pub keys: Vec<String>,
     pub dest: String,
 }
