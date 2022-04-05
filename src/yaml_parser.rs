@@ -1,19 +1,67 @@
 extern crate yaml_rust;
 use std::fs;
+use serde::Serialize;
 use yaml_rust::yaml::{Array, Hash};
 use yaml_rust::{Yaml, YamlLoader};
+
+use crate::model::Record;
+use crate::writer::write;
+use crate::config::Configuration;
 
 /// The Path to the YAML Node should be provided in the Config file. It should
 /// be an *exact* path, given in dot notation, e.g. `root.child.childtwo.node`.
 /// Multiple Nodes can be queried.
 /// Parse the Yaml file in the given `path`
-pub fn parse_yaml(path: &str) {
+pub fn parse_yaml(path: &str, conf: Configuration) {
     println!("Parsing file {}", path);
     let doc: &Yaml = &load_yaml_file(path);
     if let Some(stringified) = handle_yaml(doc["one"].clone()) {
         println!("Some value: {}", stringified);
     }
-    println!("{:?}", doc["one"]);
+    let mut entries: Vec<Record> = vec![];
+    for key in conf.keys {
+        let split: Vec<&str> = key.split(".").collect();
+        match handle_split(split, &doc) {
+            Ok(yaml) => {
+                println!("{}", yaml);
+                entries.push(handle_result(key, yaml));
+            }
+            Err(msg) => {
+                println!("{}", msg);
+            }
+        };
+    }
+    println!("{:?}", entries);
+    write(entries, "result.csv".to_string());
+}
+
+fn handle_result(key: String, value: String) -> Record {
+    let data: Record = Record { key, value };
+    data
+}
+
+fn handle_split(split: Vec<&str>, doc: &Yaml) -> Result<String, &'static str> {
+    let mut curr_yaml = doc.clone();
+    for id in split {
+        // println!("{}", id);
+        curr_yaml = curr_yaml[id].clone();
+        match curr_yaml {
+            Yaml::BadValue => {
+                let err_msg: String =
+                    format!("Bad Value at: {}", id).to_string();
+                println!("{}", err_msg);
+                return Err("Bad Value!");
+            }
+            _ => {
+                continue;
+            }
+        }
+    }
+    println!("{:?}", curr_yaml);
+    match handle_yaml(curr_yaml) {
+        Some(s) => Ok(s),
+        None => Err("Ambiguous yaml!"),
+    }
 }
 
 /// Handle every possible value of the yaml and return it as a `Option<String>`
@@ -30,8 +78,9 @@ fn handle_yaml(yaml: Yaml) -> Option<String> {
     }
 }
 
-/// Handle a `Hash` representation of a `Yaml`. Return the path to the leaf if it is a
-/// single path down to the leaf, an error code if there are multiple possibilities
+/// Handle a `Hash` representation of a `Yaml`. Return the path to the leaf if
+/// it is a single path down to the leaf, an error code if there are multiple
+/// possibilities
 fn handle_yaml_hash(yaml: Hash) -> Option<String> {
     println!("Handling hash : {:?}", yaml);
     if yaml.len() > 1 {
