@@ -1,7 +1,7 @@
 mod config;
-mod yaml_parser;
-mod writer;
 mod model;
+mod writer;
+mod yaml_parser;
 
 fn main() {
     let configuration = config::get_config();
