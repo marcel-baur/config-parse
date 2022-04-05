@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Configuration {
     pub keys: Vec<String>,
+    pub dest: String,
 }
 
 pub fn get_config() -> Configuration {

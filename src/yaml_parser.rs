@@ -15,9 +15,6 @@ use crate::config::Configuration;
 pub fn parse_yaml(path: &str, conf: Configuration) {
     println!("Parsing file {}", path);
     let doc: &Yaml = &load_yaml_file(path);
-    if let Some(stringified) = handle_yaml(doc["one"].clone()) {
-        println!("Some value: {}", stringified);
-    }
     let mut entries: Vec<Record> = vec![];
     for key in conf.keys {
         let split: Vec<&str> = key.split(".").collect();
@@ -31,8 +28,10 @@ pub fn parse_yaml(path: &str, conf: Configuration) {
             }
         };
     }
-    println!("{:?}", entries);
-    write(entries, "result.csv".to_string());
+    match write(entries, conf.dest) {
+        Ok(()) => {},
+        Err(_e) => {},
+    }
 }
 
 fn handle_result(key: String, value: String) -> Record {
