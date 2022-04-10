@@ -1,6 +1,6 @@
 # Config Parse
 A `rust` app to extract public information from your config files while keeping secret information
-(passwords, keys, etc) hidden. Currently only for `.yaml` files.
+(passwords, keys, etc) hidden. Currently only for `.yaml` and `.properties` files.
 
 # Usage
 The app is configured through the `config_parser.toml` file.
@@ -10,5 +10,5 @@ The app is configured through the `config_parser.toml` file.
 - `dest`: Destination path of the `.csv` file containing the extracted key-value pairs.
 
 # Future Work
-- Support other file types (`.property`, `.toml`, ...)
+- Support other file types (`.toml`, ...)
 - Support multi-file extraction (e.g. for `dev`, `stage`, `prod` environments)
