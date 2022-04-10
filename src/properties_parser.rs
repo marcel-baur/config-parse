@@ -156,7 +156,7 @@ pub fn parse(configuration: Configuration) {
     let contents = fs::read(configuration.file).expect("Failed to read file!");
     match parser(&contents) {
         Ok((_input, properties)) => {
-            println!("{:?}",properties);
+            println!("{:?}", properties);
 
             match write(properties, configuration.dest) {
                 Ok(()) => {}

@@ -27,14 +27,12 @@ pub fn get_config() -> Option<Configuration> {
     println!("Config: {:?}", &conf);
     println!("Filetype: {:?}", &conf.file.split(".").last());
     match &conf.file.split(".").last() {
-        Some(ending) => {
-            Some(Configuration {
-                file: conf.file,
-                keys: conf.keys,
-                dest: conf.dest,
-                filetype: ending.to_string(),
-            })
-        }
-        None => {None}
+        Some(ending) => Some(Configuration {
+            file: conf.file,
+            keys: conf.keys,
+            dest: conf.dest,
+            filetype: ending.to_string(),
+        }),
+        None => None,
     }
 }
