@@ -26,7 +26,8 @@ pub fn get_config() -> Option<Configuration> {
     let conf = settings.try_deserialize::<LoadedConfiguration>().unwrap();
     println!("Config: {:?}", &conf);
     println!("Filetype: {:?}", &conf.file.split(".").last());
-    match &conf.file.split(".").last() {
+    let filename = conf.file.clone();
+    match filename.split(".").last() {
         Some(ending) => Some(Configuration {
             file: conf.file,
             keys: conf.keys,
