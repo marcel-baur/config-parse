@@ -3,9 +3,9 @@ use std::fs;
 use yaml_rust::yaml::{Array, Hash};
 use yaml_rust::{Yaml, YamlLoader};
 
+use crate::config::Configuration;
 use crate::model::Record;
 use crate::writer::write;
-use crate::config::Configuration;
 
 /// The Path to the YAML Node should be provided in the Config file. It should
 /// be an *exact* path, given in dot notation, e.g. `root.child.childtwo.node`.
@@ -28,8 +28,8 @@ pub fn parse_yaml(conf: Configuration) {
         };
     }
     match write(entries, conf.dest) {
-        Ok(()) => {},
-        Err(_e) => {},
+        Ok(()) => {}
+        Err(_e) => {}
     }
 }
 

@@ -114,6 +114,7 @@ dependencies = [
  "config",
  "confy",
  "csv",
+ "nom",
  "serde",
  "yaml-rust",
 ]
