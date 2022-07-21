@@ -153,20 +153,23 @@ fn parser(input: &[u8]) -> IResult<&[u8], Vec<Record>> {
 }
 
 pub fn parse(configuration: Configuration) {
-    let contents = fs::read(configuration.file).expect("Failed to read file!");
-    match parser(&contents) {
-        Ok((_input, properties)) => {
-            println!("{:?}", properties);
+    for file in configuration.files {
+        let file_write = file.clone();
+        let contents = fs::read(file).expect("Failed to read file!");
+        match parser(&contents) {
+            Ok((_input, properties)) => {
+                println!("{:?}", properties);
 
-            match write(properties, configuration.dest) {
-                Ok(()) => {}
-                Err(e) => {
-                    println!("{}", e);
+                match write(properties, file_write) {
+                    Ok(()) => {}
+                    Err(e) => {
+                        println!("{}", e);
+                    }
                 }
             }
-        }
-        Err(_) => {
-            println!("ERROR");
+            Err(_) => {
+                println!("ERROR");
+            }
         }
     }
 }
