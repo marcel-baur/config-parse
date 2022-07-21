@@ -3,33 +3,35 @@ use std::fs;
 use yaml_rust::yaml::{Array, Hash};
 use yaml_rust::{Yaml, YamlLoader};
 
+use crate::config::Configuration;
 use crate::model::Record;
 use crate::writer::write;
-use crate::config::Configuration;
 
 /// The Path to the YAML Node should be provided in the Config file. It should
 /// be an *exact* path, given in dot notation, e.g. `root.child.childtwo.node`.
 /// Multiple Nodes can be queried.
 /// Parse the Yaml file in the given `path`
 pub fn parse_yaml(conf: Configuration) {
-    println!("Parsing file {}", conf.file);
-    let doc: &Yaml = &load_yaml_file(&conf.file);
-    let mut entries: Vec<Record> = vec![];
-    for key in conf.keys {
-        let split: Vec<&str> = key.split(".").collect();
-        match handle_split(split, &doc) {
-            Ok(yaml) => {
-                println!("{}", yaml);
-                entries.push(handle_result(key, yaml));
-            }
-            Err(msg) => {
-                println!("{}", msg);
-            }
-        };
-    }
-    match write(entries, conf.dest) {
-        Ok(()) => {},
-        Err(_e) => {},
+    for file in &conf.files {
+        println!("Parsing file {}", &file);
+        let doc: &Yaml = &load_yaml_file(&file);
+        let mut entries: Vec<Record> = vec![];
+        for key in &conf.keys {
+            let split: Vec<&str> = key.split(".").collect();
+            match handle_split(split, &doc) {
+                Ok(yaml) => {
+                    println!("{}", yaml);
+                    entries.push(handle_result(key.to_string(), yaml));
+                }
+                Err(msg) => {
+                    println!("{}", msg);
+                }
+            };
+        }
+        match write(entries, file.to_string()) {
+            Ok(()) => {}
+            Err(_e) => {}
+        }
     }
 }
 

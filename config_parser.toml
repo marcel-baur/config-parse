@@ -1,2 +1,3 @@
 keys = ["security.auth.cidaas.client_id", "one.big.cascade"]
-dest = "result.csv"
+filetype = "yaml"
+files = ["test.yaml"]
