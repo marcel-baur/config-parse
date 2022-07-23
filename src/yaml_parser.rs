@@ -14,13 +14,12 @@ use crate::writer::write;
 pub fn parse_yaml(conf: Configuration) {
     for file in &conf.files {
         println!("Parsing file {}", &file);
-        let doc: &Yaml = &load_yaml_file(&file);
+        let doc: &Yaml = &load_yaml_file(file);
         let mut entries: Vec<Record> = vec![];
         for key in &conf.keys {
-            let split: Vec<&str> = key.split(".").collect();
-            match handle_split(split, &doc) {
+            let split: Vec<&str> = key.split('.').collect();
+            match handle_split(split, doc) {
                 Ok(yaml) => {
-                    println!("{}", yaml);
                     entries.push(handle_result(key.to_string(), yaml));
                 }
                 Err(msg) => {
@@ -43,12 +42,10 @@ fn handle_result(key: String, value: String) -> Record {
 fn handle_split(split: Vec<&str>, doc: &Yaml) -> Result<String, &'static str> {
     let mut curr_yaml = doc.clone();
     for id in split {
-        // println!("{}", id);
         curr_yaml = curr_yaml[id].clone();
         match curr_yaml {
             Yaml::BadValue => {
-                let err_msg: String =
-                    format!("Bad Value at: {}", id).to_string();
+                let err_msg: String = format!("Bad Value at: {}", id);
                 println!("{}", err_msg);
                 return Err("Bad Value!");
             }
@@ -57,7 +54,6 @@ fn handle_split(split: Vec<&str>, doc: &Yaml) -> Result<String, &'static str> {
             }
         }
     }
-    println!("{:?}", curr_yaml);
     match handle_yaml(curr_yaml) {
         Some(s) => Ok(s),
         None => Err("Ambiguous yaml!"),
@@ -82,7 +78,6 @@ fn handle_yaml(yaml: Yaml) -> Option<String> {
 /// it is a single path down to the leaf, an error code if there are multiple
 /// possibilities
 fn handle_yaml_hash(yaml: Hash) -> Option<String> {
-    println!("Handling hash : {:?}", yaml);
     if yaml.len() > 1 {
         return Some(
             "The yaml path you provided is ambiguous! Please specify
@@ -94,7 +89,7 @@ fn handle_yaml_hash(yaml: Hash) -> Option<String> {
     // next depth of the hash.
     let key = yaml.keys().next().unwrap();
     let rec_yaml: &Yaml = &yaml[key];
-    return handle_yaml(rec_yaml.clone());
+    handle_yaml(rec_yaml.clone())
 }
 
 fn handle_yaml_array(yaml: Array) -> Option<String> {
@@ -110,5 +105,5 @@ fn load_yaml_file(path: &str) -> Yaml {
     let contents = fs::read_to_string(path).expect("Failed to read file!");
     let docs = YamlLoader::load_from_str(&contents).unwrap();
     let doc: Yaml = docs[0].clone();
-    return doc;
+    doc
 }

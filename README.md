@@ -4,11 +4,9 @@ A `rust` app to extract public information from your config files while keeping 
 
 # Usage
 The app is configured through the `config_parser.toml` file.
-- `file`: Path of the file that will be parsed.
-- `keys`: `Array` of `String` types of `YAML` keys. Separated by dot notation (e.g.
+- `files`: Paths of the files that will be parsed.
+- `keys`: `Array` of `String` types of the keys that will be extracted. Separated by dot notation (e.g.
   `auth.client.key`)
-- `dest`: Destination path of the `.csv` file containing the extracted key-value pairs.
 
 # Future Work
 - Support other file types (`.toml`, ...)
-- Support multi-file extraction (e.g. for `dev`, `stage`, `prod` environments)

@@ -9,15 +9,13 @@ pub fn write(
     let dest = generate_destination(&filename);
     let mut wtr = Writer::from_path(dest)?;
     for record in entries {
-        println!("{:?}", record);
         wtr.serialize(record)?;
     }
-
     Ok(())
 }
 
 pub fn generate_destination(filename: &str) -> String {
-    let dest_split: Vec<&str> = filename.split(".").collect();
+    let dest_split: Vec<&str> = filename.split('c').collect();
     let mut dest: String = dest_split[0].to_string();
     dest.push_str(".csv");
     dest
