@@ -158,7 +158,6 @@ pub fn parse(configuration: Configuration) {
         let contents = fs::read(file).expect("Failed to read file!");
         match parser(&contents) {
             Ok((_input, properties)) => {
-                println!("{:?}", properties);
 
                 match write(properties, file_write) {
                     Ok(()) => {}
