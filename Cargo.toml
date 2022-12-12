@@ -9,6 +9,6 @@ edition = "2021"
 yaml-rust = "0.4.5"
 confy = "0.4.0"
 serde = {version="1.0.140", features = ["derive"]}
-config = "0.13.1"
+config = "0.13.3"
 csv = "1.1"
 nom = "7.1.1"
