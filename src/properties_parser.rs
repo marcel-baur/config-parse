@@ -146,17 +146,17 @@ fn _fparser(input: &[u8]) -> IResult<&[u8], ParsedProps> {
 }
 
 /// Public parser function
-fn parser(input: &[u8]) -> IResult<&[u8], Vec<Record>> {
+pub fn parse(input: &[u8]) -> IResult<&[u8], Vec<Record>> {
     let (input, props) = _fparser(input)?;
     let v = props.0.into_iter().flatten().collect();
     Ok((input, v))
 }
 
-pub fn parse(configuration: Configuration) {
+pub fn write_keys(configuration: Configuration) {
     for file in configuration.files {
         let file_write = file.clone();
         let contents = fs::read(file).expect("Failed to read file!");
-        match parser(&contents) {
+        match parse(&contents) {
             Ok((_input, properties)) => {
 
                 match write(properties, file_write) {
