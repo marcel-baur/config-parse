@@ -3,7 +3,7 @@ use csv::Writer;
 use std::error::Error;
 
 pub fn write(
-    entries: Vec<Record>,
+    entries: &Vec<Record>,
     filename: String,
 ) -> Result<(), Box<dyn Error>> {
     let dest = generate_destination(&filename);

@@ -11,7 +11,8 @@ use crate::writer::write;
 /// be an *exact* path, given in dot notation, e.g. `root.child.childtwo.node`.
 /// Multiple Nodes can be queried.
 /// Parse the Yaml file in the given `path`
-pub fn parse_yaml(conf: Configuration) {
+pub fn parse_yaml(conf: &Configuration) -> Vec<Vec<Record>> {
+    let mut records = Vec::new();
     for file in &conf.files {
         println!("Parsing file {}", &file);
         let doc: &Yaml = &load_yaml_file(file);
@@ -23,15 +24,13 @@ pub fn parse_yaml(conf: Configuration) {
                     entries.push(handle_result(key.to_string(), yaml));
                 }
                 Err(msg) => {
-                    println!("{}", msg);
+                    println!("Cannot parse {file}: {msg}");
                 }
             };
         }
-        match write(entries, file.to_string()) {
-            Ok(()) => {}
-            Err(_e) => {}
-        }
+        records.push(entries);
     }
+    return records;
 }
 
 fn handle_result(key: String, value: String) -> Record {

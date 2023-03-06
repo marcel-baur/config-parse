@@ -151,13 +151,11 @@ fn parser(input: &[u8]) -> IResult<&[u8], Vec<Record>> {
     Ok((input, v))
 }
 
-fn to_record(entry: (Vec<String>, propparse::parser::Entry)) {
-}
-
-pub fn parse_new(configuration: Configuration) {
-    for file in configuration.files {
+pub fn parse_new(configuration: &Configuration) -> Vec<Vec<Record>> {
+    let mut records = Vec::new();
+    for file in &configuration.files {
         let parsed = propparse::fetch_file(&file);
-        let records = match parsed {
+        let result = match parsed {
             Ok(p) => {
                 let iter = p.into_iter();
                 let val = iter.map(|r| { 
@@ -173,22 +171,24 @@ pub fn parse_new(configuration: Configuration) {
             }
             Err(e) => {
                 println!("{:?}", e);
-                Vec::new()
+                Vec::<Record>::new()
             }
         };
-        println!("{:?}", records);
+        records.push(result);
     }
+    return records;
 }
 
 /// Public parser function
+#[deprecated]
 pub fn parse(configuration: Configuration) {
-    for file in configuration.files {
+    for file in &configuration.files {
         let file_write = file.clone();
         let contents = fs::read(file).expect("Failed to read file!");
         match parser(&contents) {
             Ok((_input, properties)) => {
 
-                match write(properties, file_write) {
+                match write(&properties, file_write) {
                     Ok(()) => {}
                     Err(e) => {
                         println!("{}", e);
