@@ -1,3 +1,4 @@
-keys = ["security.auth.cidaas.client_id", "one.big.cascade"]
-filetype = "yaml"
-files = ["test.yaml"]
+# keys = ["security.auth.cidaas.client_id", "one.big.cascade"]
+keys = ["this.is.a", "this.counts", "this.is.mixed", "url"]
+filetype = "properties"
+files = ["prop.properties"]

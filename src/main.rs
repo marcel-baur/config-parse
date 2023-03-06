@@ -8,7 +8,7 @@ fn main() {
     if let Some(configuration) = config::get_config() {
         match configuration.filetype.as_str() {
             "properties" => {
-                properties_parser::parse(configuration);
+                properties_parser::parse_new(configuration);
             }
             "yaml" => {
                 yaml_parser::parse_yaml(configuration);

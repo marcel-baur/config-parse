@@ -1,0 +1,9 @@
+security:
+  auth:
+    cidaas:
+      client_id: abc
+
+one:
+  big:
+    cascade:
+      asdf
