@@ -107,3 +107,9 @@ fn load_yaml_file(path: &str) -> Yaml {
     let doc: Yaml = docs[0].clone();
     doc
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+}

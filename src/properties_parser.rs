@@ -145,13 +145,42 @@ fn _fparser(input: &[u8]) -> IResult<&[u8], ParsedProps> {
     )(input)
 }
 
-/// Public parser function
 fn parser(input: &[u8]) -> IResult<&[u8], Vec<Record>> {
     let (input, props) = _fparser(input)?;
     let v = props.0.into_iter().flatten().collect();
     Ok((input, v))
 }
 
+fn to_record(entry: (Vec<String>, propparse::parser::Entry)) {
+}
+
+pub fn parse_new(configuration: Configuration) {
+    for file in configuration.files {
+        let parsed = propparse::fetch_file(&file);
+        let records = match parsed {
+            Ok(p) => {
+                let iter = p.into_iter();
+                let val = iter.map(|r| { 
+                    let value = match r.1 {
+                        propparse::parser::Value::Null => "".to_string(),
+                        propparse::parser::Value::Integer(i) => i.to_string(),
+                        propparse::parser::Value::String(s) => s,
+                    };
+
+                    Record { key: r.0.join("."), value } 
+                }).collect::<Vec<Record>>();
+                val
+            }
+            Err(e) => {
+                println!("{:?}", e);
+                Vec::new()
+            }
+        };
+        println!("{:?}", records);
+    }
+}
+
+/// Public parser function
 pub fn parse(configuration: Configuration) {
     for file in configuration.files {
         let file_write = file.clone();

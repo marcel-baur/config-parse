@@ -6,9 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-yaml-rust = "0.4"
+yaml-rust = "0.4.5"
 confy = "0.4.0"
-serde = {version="1.0.136", features = ["derive"]}
-config = "0.12.0"
+serde = {version="1.0.140", features = ["derive"]}
+config = "0.13.1"
 csv = "1.1"
 nom = "7.1.1"
+propparse = "0.2.0"
