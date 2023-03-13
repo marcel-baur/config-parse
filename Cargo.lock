@@ -340,9 +340,9 @@ dependencies = [
 
 [[package]]
 name = "propparse"
-version = "0.2.0"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3d3224f8f346b8020993fdf18a82832438522afaecedc91909db38a68afdacc0"
+checksum = "7ec592995a5602e959c274dfb921c054d5875186b02a56ccb2d1f73f35628983"
 
 [[package]]
 name = "quote"
