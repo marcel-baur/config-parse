@@ -46,6 +46,6 @@ mod tests {
     #[test]
     fn test_lint() {
         let configuration = config::get_config().unwrap();
-        lint(&configuration);
+        linter::lint(&configuration);
     }
 }
