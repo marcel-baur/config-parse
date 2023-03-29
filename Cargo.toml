@@ -2,6 +2,11 @@
 name = "config-parse"
 version = "2.0.0"
 edition = "2021"
+description = "A tool to check and extract certain key-values from your config files"
+license = "MIT OR Apache-2.0"
+homepage = "https://github.com/marcel-baur/config-parse"
+repository = "https://github.com/marcel-baur/config-parse"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
