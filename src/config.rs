@@ -8,7 +8,7 @@ struct LoadedConfiguration {
     pub filetype: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Configuration {
     pub files: Vec<String>,
     pub keys: Vec<String>,

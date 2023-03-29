@@ -3,6 +3,14 @@ security:
     cidaas:
       client_id: abc
 
+array: 
+  - a
+  - b
+
+nested:
+  arr:
+    - c
+    - d
 one:
   big:
     cascade:

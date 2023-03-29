@@ -1,4 +1,5 @@
 extern crate yaml_rust;
+use std::collections::HashMap;
 use std::fs;
 use yaml_rust::yaml::{Array, Hash};
 use yaml_rust::{Yaml, YamlLoader};
@@ -30,6 +31,61 @@ pub fn parse_yaml(conf: &Configuration) -> Vec<Vec<Record>> {
         records.push(entries);
     }
     return records;
+}
+
+pub fn lint_yaml(conf: &Configuration) -> HashMap<String, Vec<String>> {
+    let mut records = HashMap::new();
+    for file in &conf.files {
+        records.insert(file.clone(), Vec::new());
+        let fname = file.clone();
+        let doc: Yaml = load_yaml_file(file);
+        let mut ve = Vec::<String>::new();
+        lint_yaml_tree(doc, &mut ve, None);
+        records.insert(fname, ve);
+    }
+    return records;
+}
+
+fn lint_yaml_tree(yaml: Yaml, list: &mut Vec<String>, cur_key: Option<String>) {
+    match yaml {
+        Yaml::Array(a) => {
+            for yam in a {
+                lint_yaml_tree(yam, list, cur_key.clone());
+            }
+        }
+        Yaml::Hash(h) => {
+            h.into_iter().for_each(|k| {
+                let key = k.0;
+                let val = k.1;
+                let ck = match &cur_key {
+                    Some(k) => {
+                        let ch = k;
+                        let ke = ch.to_owned() + &".".to_string();
+                        String::try_into(ke).unwrap()
+                    }
+                    None => "".to_string(),
+                };
+                let cl = match key {
+                    Yaml::Real(s) => (ck + &s).to_string(),
+                    Yaml::String(s) => (ck + &s).to_string(),
+                    Yaml::Integer(i) => (ck + &i.to_string()).to_string(),
+                    Yaml::Boolean(b) => (ck + &b.to_string()).to_string(),
+                    _ => {
+                        println!("Other val!");
+                        "".to_string()
+                    }
+                };
+                lint_yaml_tree(val, list, Some(cl));
+            });
+        }
+        _ => {
+            match cur_key {
+                Some(val) => list.push(val),
+                None => {}
+            };
+        }
+    };
+    list.dedup();
 }
 
 fn handle_result(key: String, value: String) -> Record {
@@ -102,12 +158,21 @@ fn handle_yaml_array(yaml: Array) -> Option<String> {
 fn load_yaml_file(path: &str) -> Yaml {
     let contents = fs::read_to_string(path).expect("Failed to read file!");
     let docs = YamlLoader::load_from_str(&contents).unwrap();
-    let doc: Yaml = docs[0].clone();
-    doc
+    docs[0].clone()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    #[test]
+    fn yaml() {
+        let doc = YamlLoader::load_from_str(
+            &fs::read_to_string("test.yaml".to_string()).unwrap(),
+        )
+        .unwrap();
+        let mut list = Vec::<String>::new();
+        lint_yaml_tree(doc[0].clone(), &mut list, None);
+        println!("{:?}", list);
+    }
 }
