@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use propparse::fetch_file;
+use propparse::parse_file;
 
 use crate::{config::Configuration, yaml_parser::lint_yaml};
 
@@ -11,7 +11,7 @@ pub enum Filetype {
     Properties,
 }
 
-pub fn fetch_filetypes(config: &Configuration) -> Filetype {
+pub fn fetch_file_types(config: &Configuration) -> Filetype {
     let files = config.files.clone();
     let endings: Vec<String> = files
         .into_iter()
@@ -44,7 +44,7 @@ pub fn lint_files(
         Filetype::Properties => {
             let mut res = HashMap::new();
             for file in config.clone().files {
-                let parsed = match fetch_file(file.as_str()) {
+                let parsed = match parse_file(file.as_str()) {
                     Ok(r) => r,
                     Err(e) => {
                         panic!("Error: {:?}", e);
@@ -62,7 +62,7 @@ pub fn lint_files(
 }
 
 pub fn lint(configuration: &Configuration) {
-    let ftype = fetch_filetypes(&configuration);
+    let ftype = fetch_file_types(&configuration);
     let mut key_map = HashMap::<String, Vec<String>>::new();
 
     let linted = lint_files(configuration, ftype);
