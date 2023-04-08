@@ -45,7 +45,7 @@ mod tests {
     use super::*;
     #[test]
     fn test_lint() {
-        let configuration = config::get_config().unwrap();
+        let configuration = config::get_test_config().unwrap();
         linter::lint(&configuration);
     }
 }

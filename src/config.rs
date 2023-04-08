@@ -30,3 +30,19 @@ pub fn get_config() -> Option<Configuration> {
         filetype: conf.filetype,
     })
 }
+
+pub fn get_test_config() -> Option<Configuration> {
+    let settings = Config::builder()
+        .add_source(config::File::with_name("test_config"))
+        .add_source(config::Environment::with_prefix("APP"))
+        .build()
+        .unwrap();
+
+    let conf = settings.try_deserialize::<LoadedConfiguration>().unwrap();
+    println!("Config: {:?}", &conf);
+    Some(Configuration {
+        files: conf.files,
+        keys: conf.keys,
+        filetype: conf.filetype,
+    })
+}

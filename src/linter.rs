@@ -107,3 +107,52 @@ pub fn lint(configuration: &Configuration) {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::config;
+    fn get_yaml_config() -> Configuration {
+        Configuration { 
+            files: vec!["test/1.yaml".to_string(), "test/2.yaml".to_string()],
+            keys: vec!["one.big.cascade".to_string(), "url".to_string()],
+            filetype: "yaml".to_string() 
+        }
+    }
+
+    fn get_prop_config() -> Configuration {
+        Configuration { 
+            files: vec!["test/1.properties".to_string(), "test/2.properties".to_string()],
+            keys: vec!["this.is.a".to_string(),"this.counts".to_string(), "this.is.mixed".to_string()],
+            filetype: "properties".to_string() 
+        }
+    }
+
+    #[test]
+    fn test_lint_yaml() {
+        let config = get_yaml_config();
+        let result = lint_files(&config, Filetype::Yaml);
+        let file_one_keys = vec!["security.auth.cidaas.client_id", "security.auth.cidaas.client_secret", "one.big.cascade", "url", "value"];
+        let file_two_keys = vec!["security.auth.cidaas.client_id", "security.auth.cidaas.client_secret", "security.auth.gcloud", "one.big.cascade", "url", "value"];
+        let f1: Vec<String> = file_one_keys.into_iter().map(|k| k.to_string()).collect();
+        let f2: Vec<String> = file_two_keys.into_iter().map(|k| k.to_string()).collect();
+        let mut expected = HashMap::new();
+        expected.insert("test/1.yaml".to_string(), f1);
+        expected.insert("test/2.yaml".to_string(), f2);
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_lint_properties() {
+        let config = get_prop_config();
+        let result = lint_files(&config, Filetype::Properties);
+        let file_one_keys = vec!["this.is.a", "this.counts", "this.is.mixed", "url"];
+        let file_two_keys = vec!["this.is.a", "this.counts", "this.is.mixed", "url", "only.two"];
+        let f1: Vec<String> = file_one_keys.into_iter().map(|k| k.to_string()).collect();
+        let f2: Vec<String> = file_two_keys.into_iter().map(|k| k.to_string()).collect();
+        let mut expected = HashMap::new();
+        expected.insert("test/1.properties".to_string(), f1);
+        expected.insert("test/2.properties".to_string(), f2);
+        assert_eq!(result, expected);
+    }
+}
