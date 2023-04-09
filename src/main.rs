@@ -12,8 +12,9 @@ mod yaml_parser;
 
 fn main() {
     if let Some(conf) = config::get_config() {
-        let arc_lint = Arc::new(conf.clone());
-        let arc_parse = Arc::new(conf.clone());
+        let arc = Arc::new(conf.clone());
+        let arc_lint = arc.clone();
+        let arc_parse = arc.clone();
         let lint_handle = thread::spawn(move || {
             linter::lint(arc_lint.as_ref());
         });
