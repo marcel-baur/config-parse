@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use log::warn;
 use propparse::parse_file;
 
 use crate::{config::Configuration, yaml_parser::lint_yaml};
@@ -113,7 +112,6 @@ pub fn lint(configuration: &Configuration) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config;
     fn get_yaml_config() -> Configuration {
         Configuration {
             files: vec!["test/1.yaml".to_string(), "test/2.yaml".to_string()],
@@ -211,6 +209,6 @@ mod tests {
             filetype: "yaml".to_string(),
             keys: Vec::new(),
         };
-        let result = fetch_file_types(&config);
+        fetch_file_types(&config);
     }
 }

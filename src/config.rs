@@ -20,15 +20,3 @@ pub fn get_config() -> Option<Configuration> {
     info!("Config: {:?}", &conf);
     Some(conf)
 }
-
-pub fn get_test_config() -> Option<Configuration> {
-    let settings = Config::builder()
-        .add_source(config::File::with_name("test_config"))
-        .add_source(config::Environment::with_prefix("APP"))
-        .build()
-        .unwrap();
-
-    let conf = settings.try_deserialize::<Configuration>().unwrap();
-    info!("Config: {:?}", &conf);
-    Some(conf)
-}

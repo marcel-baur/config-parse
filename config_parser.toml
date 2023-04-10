@@ -1,4 +1,4 @@
 # keys = ["security.auth.cidaas.client_id", "one.big.cascade"]
 keys = ["this.is.a", "this.counts", "this.is.mixed", "url"]
 filetype = "properties"
-files = ["prop.properties"]
+files = ["test/1.properties", "test/2.properties"]
