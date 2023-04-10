@@ -1,6 +1,6 @@
 use config::Config;
 use serde::{Deserialize, Serialize};
-use log::info;
+use log::{info, error};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Configuration {
@@ -10,11 +10,16 @@ pub struct Configuration {
 }
 
 pub fn get_config() -> Option<Configuration> {
-    let settings = Config::builder()
+    let settings = match Config::builder()
         .add_source(config::File::with_name("config_parser"))
         .add_source(config::Environment::with_prefix("APP"))
-        .build()
-        .unwrap();
+        .build() {
+            Ok(settings) => settings,
+            Err(e) => {
+                error!("Panic while fetching config: {:?}", e);
+                return None;
+            }
+        };
 
     let conf = settings.try_deserialize::<Configuration>().unwrap();
     info!("Config: {:?}", &conf);

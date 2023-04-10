@@ -62,8 +62,8 @@ fn parse(arc_parse: Arc<Configuration>) {
 mod tests {
     use super::*;
     #[test]
-    fn test_lint() {
-        let configuration = config::get_test_config().unwrap();
+    fn test_load_config() {
+        let configuration = config::get_config().unwrap();
         linter::lint(&configuration);
     }
 }
