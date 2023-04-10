@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use log::warn;
 use propparse::parse_file;
 
 use crate::{config::Configuration, yaml_parser::lint_yaml};

@@ -1,6 +1,7 @@
 extern crate yaml_rust;
 use std::collections::HashMap;
 use std::fs;
+use log::{info, error, warn};
 use yaml_rust::yaml::{Array, Hash};
 use yaml_rust::{Yaml, YamlLoader};
 
@@ -14,7 +15,7 @@ use crate::model::Record;
 pub fn parse_yaml(conf: &Configuration) -> Vec<Vec<Record>> {
     let mut records = Vec::new();
     for file in &conf.files {
-        println!("Parsing file {}", &file);
+        info!("Parsing file {}", &file);
         let doc: &Yaml = &load_yaml_file(file);
         let mut entries: Vec<Record> = vec![];
         for key in &conf.keys {
@@ -24,7 +25,7 @@ pub fn parse_yaml(conf: &Configuration) -> Vec<Vec<Record>> {
                     entries.push(handle_result(key.to_string(), yaml));
                 }
                 Err(msg) => {
-                    println!("Cannot parse {file}: {msg}");
+                    error!("Cannot parse {file}: {msg}");
                 }
             };
         }
@@ -71,7 +72,7 @@ fn lint_yaml_tree(yaml: Yaml, list: &mut Vec<String>, cur_key: Option<String>) {
                     Yaml::Integer(i) => (ck + &i.to_string()).to_string(),
                     Yaml::Boolean(b) => (ck + &b.to_string()).to_string(),
                     _ => {
-                        println!("Other val!");
+                        warn!("Other val!");
                         "".to_string()
                     }
                 };
@@ -100,7 +101,7 @@ fn handle_split(split: Vec<&str>, doc: &Yaml) -> Result<String, &'static str> {
         match curr_yaml {
             Yaml::BadValue => {
                 let err_msg: String = format!("Bad Value at: {}", id);
-                println!("{}", err_msg);
+                error!("{}", err_msg);
                 return Err("Bad Value!");
             }
             _ => {
@@ -173,6 +174,6 @@ mod tests {
         .unwrap();
         let mut list = Vec::<String>::new();
         lint_yaml_tree(doc[0].clone(), &mut list, None);
-        println!("{:?}", list);
+        info!("{:?}", list);
     }
 }

@@ -11,6 +11,7 @@ mod writer;
 mod yaml_parser;
 
 fn main() {
+    log4rs::init_file("log4rs.yml", Default::default()).unwrap();
     if let Some(conf) = config::get_config() {
         let arc = Arc::new(conf.clone());
         let arc_lint = arc.clone();

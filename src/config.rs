@@ -1,12 +1,6 @@
 use config::Config;
 use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Serialize, Deserialize)]
-struct LoadedConfiguration {
-    pub files: Vec<String>,
-    pub keys: Vec<String>,
-    pub filetype: String,
-}
+use log::info;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Configuration {
@@ -22,13 +16,9 @@ pub fn get_config() -> Option<Configuration> {
         .build()
         .unwrap();
 
-    let conf = settings.try_deserialize::<LoadedConfiguration>().unwrap();
-    println!("Config: {:?}", &conf);
-    Some(Configuration {
-        files: conf.files,
-        keys: conf.keys,
-        filetype: conf.filetype,
-    })
+    let conf = settings.try_deserialize::<Configuration>().unwrap();
+    info!("Config: {:?}", &conf);
+    Some(conf)
 }
 
 pub fn get_test_config() -> Option<Configuration> {
@@ -38,11 +28,7 @@ pub fn get_test_config() -> Option<Configuration> {
         .build()
         .unwrap();
 
-    let conf = settings.try_deserialize::<LoadedConfiguration>().unwrap();
-    println!("Config: {:?}", &conf);
-    Some(Configuration {
-        files: conf.files,
-        keys: conf.keys,
-        filetype: conf.filetype,
-    })
+    let conf = settings.try_deserialize::<Configuration>().unwrap();
+    info!("Config: {:?}", &conf);
+    Some(conf)
 }
