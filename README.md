@@ -1,6 +1,8 @@
 # Config Parse
 A `rust` app to extract public information from your config files while keeping secret information
-(passwords, keys, etc) hidden. Currently only for `.yaml` and `.properties` files.
+(passwords, keys, etc) hidden. It also checks multiple config files to assert that they include the same keys.
+
+Currently only for `.yaml` and `.properties` files.
 
 # Usage
 The app is configured through the `config_parser.toml` file.
