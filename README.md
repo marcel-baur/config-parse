@@ -7,7 +7,6 @@ The app is configured through the `config_parser.toml` file.
 - `files`: Paths of the files that will be parsed.
 - `keys`: `Array` of `String` types of the keys that will be extracted. Separated by dot notation (e.g.
   `auth.client.key`)
-- `filetype`: The type of the files that will be parsed. `properties` or `yaml`.
 
 # Future Work
 - Support other file types (`.toml`, ...)
