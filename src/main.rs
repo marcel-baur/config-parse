@@ -1,7 +1,7 @@
 use std::{sync::Arc, thread};
 
 use crate::config::Configuration;
-use linter::Filetype;
+use linter::{Filetype, fetch_file_types};
 
 mod config;
 mod linter;
@@ -29,8 +29,9 @@ fn main() {
 
 fn parse(arc_parse: Arc<Configuration>) {
     let configuration = arc_parse.as_ref().clone();
-    match configuration.filetype.as_str() {
-        "properties" => {
+    let filetype = fetch_file_types(&configuration);
+    match filetype {
+        Filetype::Properties => {
             let records = properties_parser::parse_new(&configuration);
             for (idx, file) in
                 configuration.clone().files.into_iter().enumerate()
@@ -42,7 +43,7 @@ fn parse(arc_parse: Arc<Configuration>) {
             }
             linter::lint_files(&configuration, Filetype::Properties);
         }
-        "yaml" => {
+        Filetype::Yaml => {
             let records = yaml_parser::parse_yaml(&configuration);
             for (idx, file) in
                 configuration.clone().files.into_iter().enumerate()
@@ -54,7 +55,6 @@ fn parse(arc_parse: Arc<Configuration>) {
             }
             linter::lint_files(&configuration, Filetype::Yaml);
         }
-        _ => {}
     }
 }
 

@@ -6,7 +6,6 @@ use log::{info, error};
 pub struct Configuration {
     pub files: Vec<String>,
     pub keys: Vec<String>,
-    pub filetype: String,
 }
 
 pub fn get_config() -> Option<Configuration> {
