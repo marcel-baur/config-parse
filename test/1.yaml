@@ -7,6 +7,8 @@ security:
 one:
   big:
     cascade: yeet
+    correct:
+      cascade: ohno
 
 url: http://asdf.de:9393
 

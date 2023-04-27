@@ -143,6 +143,7 @@ mod tests {
             "security.auth.cidaas.client_id",
             "security.auth.cidaas.client_secret",
             "one.big.cascade",
+            "one.big.correct.cascade",
             "url",
             "value",
         ];
@@ -153,6 +154,7 @@ mod tests {
             "one.big.cascade",
             "url",
             "value",
+            "correct.cascade"
         ];
         let f1: Vec<String> =
             file_one_keys.into_iter().map(|k| k.to_string()).collect();
