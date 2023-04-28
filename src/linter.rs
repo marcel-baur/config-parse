@@ -116,6 +116,7 @@ mod tests {
         Configuration {
             files: vec!["test/1.yaml".to_string(), "test/2.yaml".to_string()],
             keys: vec!["one.big.cascade".to_string(), "url".to_string()],
+            cli: false,
         }
     }
 
@@ -130,6 +131,7 @@ mod tests {
                 "this.counts".to_string(),
                 "this.is.mixed".to_string(),
             ],
+            cli: false,
         }
     }
 
@@ -207,6 +209,7 @@ mod tests {
         let config = Configuration {
             files: vec!["1.properties".to_string(), "2.yaml".to_string()],
             keys: Vec::new(),
+            cli: false,
         };
         fetch_file_types(&config);
     }
