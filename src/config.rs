@@ -1,12 +1,17 @@
+use clap::Parser;
 use config::Config;
 use serde::{Deserialize, Serialize};
 use log::{info, error};
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, Parser)]
+#[command(author, version, about, long_about = None)]
 pub struct Configuration {
+    #[arg(long)]
     pub files: Vec<String>,
+    #[arg(long)]
     pub keys: Vec<String>,
-    pub filetype: String,
+    #[arg(long)]
+    pub cli: bool,
 }
 
 pub fn get_config() -> Option<Configuration> {

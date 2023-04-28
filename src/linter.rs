@@ -116,7 +116,7 @@ mod tests {
         Configuration {
             files: vec!["test/1.yaml".to_string(), "test/2.yaml".to_string()],
             keys: vec!["one.big.cascade".to_string(), "url".to_string()],
-            filetype: "yaml".to_string(),
+            cli: false,
         }
     }
 
@@ -131,7 +131,7 @@ mod tests {
                 "this.counts".to_string(),
                 "this.is.mixed".to_string(),
             ],
-            filetype: "properties".to_string(),
+            cli: false,
         }
     }
 
@@ -143,6 +143,7 @@ mod tests {
             "security.auth.cidaas.client_id",
             "security.auth.cidaas.client_secret",
             "one.big.cascade",
+            "one.big.correct.cascade",
             "url",
             "value",
         ];
@@ -153,6 +154,7 @@ mod tests {
             "one.big.cascade",
             "url",
             "value",
+            "correct.cascade"
         ];
         let f1: Vec<String> =
             file_one_keys.into_iter().map(|k| k.to_string()).collect();
@@ -206,8 +208,8 @@ mod tests {
     fn fetches_err() {
         let config = Configuration {
             files: vec!["1.properties".to_string(), "2.yaml".to_string()],
-            filetype: "yaml".to_string(),
             keys: Vec::new(),
+            cli: false,
         };
         fetch_file_types(&config);
     }
