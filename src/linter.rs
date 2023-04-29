@@ -18,12 +18,12 @@ pub fn fetch_file_types(config: &Configuration) -> Filetype {
         .into_iter()
         // .map(|f| f.to_string())
         .map(|f| {
-            let split: Vec<&str> = f.split(".").collect();
+            let split: Vec<&str> = f.split('.').collect();
             let last = split.last().unwrap().to_string();
             last
         })
         .collect();
-    if endings.len() == 0 {
+    if endings.is_empty() {
         panic!("No files!");
     }
     let first = endings[0].clone();
@@ -63,7 +63,7 @@ pub fn lint_files(
 }
 
 pub fn lint(configuration: &Configuration) {
-    let ftype = fetch_file_types(&configuration);
+    let ftype = fetch_file_types(configuration);
     let mut key_map = HashMap::<String, Vec<String>>::new();
 
     let linted = lint_files(configuration, ftype);
@@ -92,10 +92,9 @@ pub fn lint(configuration: &Configuration) {
     for outlier in outliers {
         let variable = outlier.0;
         println!(
-            "{}: {}{}",
+            "{}: {}. This parameter dows not appear in the following files:",
             "Outiler".bold(),
-            variable.bold().yellow(),
-            ". This parameter dows not appear in the following files:"
+            variable.bold().yellow()
         );
         let not_in: Vec<String> = configuration
             .files

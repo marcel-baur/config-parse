@@ -14,39 +14,30 @@ mod yaml_parser;
 fn main() {
     log4rs::init_file("log4rs.yml", Default::default()).unwrap();
     let args = Configuration::parse();
-    println!("{:?}", args);
+    log::info!("{:?}", args);
     match args.cli {
         false => {
             log::info!("From Config File");
             if let Some(conf) = config::get_config() {
-                let arc = Arc::new(conf.clone());
-                let arc_lint = arc.clone();
-                let arc_parse = arc.clone();
-                let lint_handle = thread::spawn(move || {
-                    linter::lint(arc_lint.as_ref());
-                });
-                let parse_handle = thread::spawn(move || {
-                    parse(arc_parse);
-                });
-                lint_handle.join().unwrap();
-                parse_handle.join().unwrap();
+                run(conf);
             }
         },
         true => {
             log::info!("From CLI Args");
-            let arc = Arc::new(args.clone());
-            let arc_lint = arc.clone();
-            let arc_parse = arc.clone();
-            let lint_handle = thread::spawn(move || {
-                linter::lint(arc_lint.as_ref());
-            });
-            let parse_handle = thread::spawn(move || {
-                parse(arc_parse);
-            });
-            lint_handle.join().unwrap();
-            parse_handle.join().unwrap();
+            run(args);
         },
     };
+}
+
+fn run(args: Configuration) {
+    let arc = Arc::new(args);
+    let arc_lint = arc.clone();
+    let _lint_handle = thread::spawn(move || {
+        linter::lint(arc_lint.as_ref());
+    });
+    let _parse_handle = thread::spawn(move || {
+        parse(arc);
+    });
 }
 
 fn parse(arc_parse: Arc<Configuration>) {

@@ -31,7 +31,7 @@ pub fn parse_yaml(conf: &Configuration) -> Vec<Vec<Record>> {
         }
         records.push(entries);
     }
-    return records;
+    records
 }
 
 pub fn lint_yaml(conf: &Configuration) -> HashMap<String, Vec<String>> {
@@ -44,7 +44,7 @@ pub fn lint_yaml(conf: &Configuration) -> HashMap<String, Vec<String>> {
         lint_yaml_tree(doc, &mut ve, None);
         records.insert(fname, ve);
     }
-    return records;
+    records
 }
 
 fn lint_yaml_tree(yaml: Yaml, list: &mut Vec<String>, cur_key: Option<String>) {
@@ -61,16 +61,16 @@ fn lint_yaml_tree(yaml: Yaml, list: &mut Vec<String>, cur_key: Option<String>) {
                 let ck = match &cur_key {
                     Some(k) => {
                         let ch = k;
-                        let ke = ch.to_owned() + &".".to_string();
+                        let ke = ch.to_owned() + ".";
                         String::try_into(ke).unwrap()
                     }
                     None => "".to_string(),
                 };
                 let cl = match key {
-                    Yaml::Real(s) => (ck + &s).to_string(),
-                    Yaml::String(s) => (ck + &s).to_string(),
-                    Yaml::Integer(i) => (ck + &i.to_string()).to_string(),
-                    Yaml::Boolean(b) => (ck + &b.to_string()).to_string(),
+                    Yaml::Real(s) => ck + &s,
+                    Yaml::String(s) => ck + &s,
+                    Yaml::Integer(i) => ck + &i.to_string(),
+                    Yaml::Boolean(b) => ck + &b.to_string(),
                     _ => {
                         warn!("Other val!");
                         "".to_string()
@@ -80,9 +80,8 @@ fn lint_yaml_tree(yaml: Yaml, list: &mut Vec<String>, cur_key: Option<String>) {
             });
         }
         _ => {
-            match cur_key {
-                Some(val) => list.push(val),
-                None => {}
+            if let Some(val) = cur_key {
+                list.push(val);
             };
         }
     };

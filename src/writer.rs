@@ -15,8 +15,10 @@ pub fn write(
 }
 
 pub fn generate_destination(filename: &str) -> String {
-    let dest_split: Vec<&str> = filename.split('c').collect();
+    let dest_split: Vec<&str> = filename.split('.').collect();
     let mut dest: String = dest_split[0].to_string();
     dest.push_str(".csv");
+    let fmt_string = dest.as_str();
+    log::info!("Creating CSV: {}", fmt_string);
     dest
 }
