@@ -12,7 +12,6 @@ mod writer;
 mod yaml_parser;
 
 fn main() {
-    log4rs::init_file("log4rs.yml", Default::default()).unwrap();
     let args = Configuration::parse();
     log::info!("{:?}", args);
     match args.cli {
