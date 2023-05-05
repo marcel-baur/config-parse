@@ -12,17 +12,18 @@ mod writer;
 mod yaml_parser;
 
 fn main() {
+    tracing_subscriber::fmt::init();
     let args = Configuration::parse();
-    log::info!("{:?}", args);
+    tracing::info!("{:?}", args);
     match args.cli {
         false => {
-            log::info!("From Config File");
+            tracing::info!("From Config File");
             if let Some(conf) = config::get_config() {
                 run(conf);
             }
         },
         true => {
-            log::info!("From CLI Args");
+            tracing::info!("From CLI Args");
             run(args);
         },
     };
@@ -37,6 +38,8 @@ fn run(args: Configuration) {
     let _parse_handle = thread::spawn(move || {
         parse(arc);
     });
+    _lint_handle.join().unwrap();
+    _parse_handle.join().unwrap();
 }
 
 fn parse(arc_parse: Arc<Configuration>) {

@@ -1,7 +1,7 @@
 extern crate yaml_rust;
 use std::collections::HashMap;
 use std::fs;
-use log::{info, error, warn};
+use tracing::{info, error, warn};
 use yaml_rust::yaml::{Array, Hash};
 use yaml_rust::{Yaml, YamlLoader};
 

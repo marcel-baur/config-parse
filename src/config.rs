@@ -1,7 +1,7 @@
 use clap::Parser;
 use config::Config;
 use serde::{Deserialize, Serialize};
-use log::{info, error};
+use tracing::{info, error};
 
 #[derive(Clone, Debug, Serialize, Deserialize, Parser)]
 #[command(author, version, about, long_about = None)]

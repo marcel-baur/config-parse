@@ -1,5 +1,3 @@
-use log::error;
-
 use crate::config::Configuration;
 use crate::model::Record;
 
@@ -29,7 +27,7 @@ pub fn parse_new(configuration: &Configuration) -> Vec<Vec<Record>> {
                 val
             }
             Err(e) => {
-                error!("{:?}", e);
+                tracing::error!("{:?}", e);
                 Vec::<Record>::new()
             }
         };
