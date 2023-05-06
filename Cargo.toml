@@ -1,6 +1,6 @@
 [package]
 name = "config-parse"
-version = "2.2.1"
+version = "2.2.2"
 edition = "2021"
 description = "A tool to check and extract certain key-values from your config files"
 license = "MIT OR Apache-2.0"
