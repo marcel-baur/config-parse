@@ -17,7 +17,7 @@ serde = {version="1.0.163", features = ["derive"]}
 config = "0.13.1"
 csv = "1.2"
 propparse = "0.2.4"
-colored = "2.0.0"
+colored = "2.0.1"
 tracing = "0.1"
 tracing-subscriber = "0.3"
 clap = { version = "4.3.3", features = ["derive"] }
